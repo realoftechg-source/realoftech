@@ -133,6 +133,20 @@ app.get('/', async (req, res) => {
   res.send(rendered);
 });
 
+app.get('/downloads/CreoveyaSetup.exe', (req, res) => {
+  const installerPath = path.join(__dirname, 'public', 'downloads', 'CreoveyaSetup.exe');
+  if (!fs.existsSync(installerPath)) {
+    return res.status(404).send('Desktop installer not found. Please build the Windows installer first.');
+  }
+
+  res.setHeader('Content-Type', 'application/octet-stream');
+  res.setHeader('Content-Disposition', 'attachment; filename="CreoveyaSetup.exe"');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.sendFile(installerPath);
+});
+
 // ---------------------------------------------------------------------------
 // Static frontend
 // ---------------------------------------------------------------------------
